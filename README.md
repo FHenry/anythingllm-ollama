@@ -52,17 +52,20 @@ go to http://127.0.0.1:3010 for ollama webui.
 create dump credentials 
 
 and 
-![img.png](img.png)
+![img.png](assets/img.png)
 It will give you a simple way to upload new models by get LLM models available from https://ollama.com/library
-![img_1.png](img_1.png)
+![img_1.png](assets/img_1.png)
 
 After that 
-go to http://127.0.0.1:3001 for anythingllm here 
-![img_2.png](img_2.png)
+go to http://127.0.0.1:3001 for anything-llm here :
 
-![img_3.png](img_3.png)
+![img_2.png](assets/img_2.png)
+
+![img_3.png](assets/img_3.png)
 
 You can choose models to chat with
+
+![img_4.png](assets/img_4.png)
 
 
 ### License
