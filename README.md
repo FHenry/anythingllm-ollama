@@ -65,3 +65,12 @@ go to http://127.0.0.1:3001 for anythingllm here
 You can choose models to chat with
 
 
+### License
+
+GNU/General Public License (see [license.txt](../license.txt))
+
+This project is licensed as GNU General Public License (v3).
+
+By contributing to this project, you agree that your contributions will be licensed under its GNU General Public License (v3).
+
+
