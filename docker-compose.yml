@@ -13,12 +13,14 @@ services:
               capabilities: [ gpu ]
     volumes:
       - ollama_storage:/root/.ollama
-    restart: unless-stopped
+#    restart: unless-stopped
+    restart: no
 
   ollama-webui:
     image: ghcr.io/ollama-webui/ollama-webui:main
     container_name: ollama-webui
-    restart: unless-stopped
+#    restart: unless-stopped
+    restart: no
     environment:
       - 'OLLAMA_BASE_URL=http://ollama-server:11434'
     volumes:
