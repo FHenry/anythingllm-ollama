@@ -22,20 +22,23 @@ services:
 #    restart: unless-stopped
     restart: no
     environment:
-      - 'OLLAMA_BASE_URL=http://ollama-server:11434'
+      - OLLAMA_BASE_URL=http://ollama-server:11434
     volumes:
       - ollama_webui:/app/backend/data
     ports:
       - "3010:8080"
     extra_hosts:
       - host.docker.internal:host-gateway
+    depends_on:
+      - ollama-server
 
   anything-llm:
     image: mintplexlabs/anythingllm
     container_name: anything-llm
     cap_add:
       - SYS_ADMIN
-    restart: unless-stopped
+#    restart: unless-stopped
+    restart: no
     environment:
       - SERVER_PORT=3001
       - UID='1000'
@@ -57,7 +60,7 @@ services:
       - anythingllm_hotdir:/app/collector/hotdir
       - anythingllm_outputs:/app/collector/outputs
     ports:
-      - "3001:3001"
+      - "3015:3001"
     extra_hosts:
       - host.docker.internal:host-gateway
     depends_on:

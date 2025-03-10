@@ -57,7 +57,7 @@ It will give you a simple way to upload new models by get LLM models available f
 ![img_1.png](assets/img_1.png)
 
 After that 
-go to http://127.0.0.1:3001 for anything-llm here :
+go to http://127.0.0.1:3015 for anything-llm here :
 
 ![img_2.png](assets/img_2.png)
 
