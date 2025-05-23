@@ -1,0 +1,104 @@
+services:
+  ollama-server:
+    image: ollama/ollama
+    container_name: ollama-server
+    ports:
+      - "11434:11434"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all  # Utilise tous les GPU disponibles
+              capabilities: [ gpu ]
+    volumes:
+      - ollama_storage:/root/.ollama
+#    restart: unless-stopped
+    restart: no
+
+  ollama-webui:
+    image: ghcr.io/ollama-webui/ollama-webui:main
+    container_name: ollama-webui
+#    restart: unless-stopped
+    restart: no
+    environment:
+      - OLLAMA_BASE_URL=http://ollama-server:11434
+    volumes:
+      - ollama_webui:/app/backend/data
+    ports:
+      - "3010:8080"
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    depends_on:
+      - ollama-server
+
+  anything-llm:
+    image: mintplexlabs/anythingllm
+    container_name: anything-llm
+    cap_add:
+      - SYS_ADMIN
+#    restart: unless-stopped
+    restart: no
+    environment:
+      - SERVER_PORT=3001
+      - UID='1000'
+      - GID='1000'
+      - STORAGE_DIR==/app/server/storage
+      - LLM_PROVIDER=ollama
+      - OLLAMA_BASE_PATH=http://ollama-server:11434
+      - OLLAMA_MODEL_TOKEN_LIMIT=4096
+      - EMBEDDING_ENGINE=ollama
+      - EMBEDDING_BASE_PATH=http://ollama-server:11434
+      - EMBEDDING_MODEL_PREF=nomic-embed-text:latest
+      - EMBEDDING_MODEL_MAX_CHUNK_LENGTH=8192
+      - VECTOR_DB=lancedb
+      - WHISPER_PROVIDER=local
+      - TTS_PROVIDER=native
+      - PASSWORDMINCHAR=8
+    volumes:
+      - anythingllm_storage:/app/server/storage
+      - anythingllm_hotdir:/app/collector/hotdir
+      - anythingllm_outputs:/app/collector/outputs
+    ports:
+      - "3015:3001"
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    depends_on:
+      - ollama-server
+
+
+volumes:
+  anythingllm_storage:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /opt/anythingllm/storage
+
+  anythingllm_hotdir:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /opt/anythingllm/hotdir
+
+  anythingllm_outputs:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /opt/anythingllm/outputs
+
+  ollama_storage:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /opt/ollama/storage
+
+  ollama_webui:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /opt/ollama/webui
