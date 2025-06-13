@@ -16,7 +16,7 @@ services:
 #    restart: unless-stopped
     restart: no
 
-
+volumes:
   ollama_storage:
     driver: local
     driver_opts:
